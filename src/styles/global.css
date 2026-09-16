@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Tailwind restrito de propósito: sem paleta padrão, sem raios grandes,
+ * sem sombras e sem blur. Só existe o que está definido aqui.
+ */
+@theme {
+  --color-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --text-shadow-*: initial;
+  --blur-*: initial;
+
+  --radius-sm: 2px;
+
+  --text-label: 0.75rem;
+  --text-label--line-height: 1rem;
+  --text-label--letter-spacing: 0.06em;
+
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-code);
+}
+
+@layer base {
+  :root,
+  [data-theme="light"] {
+    color-scheme: light;
+    --bg: #fafafa;
+    --surface: #f2f2f3;
+    --fg: #18181b;
+    --muted: #52525b;
+    --subtle: #6b6b73;
+    --line: #e4e4e7;
+    --line-strong: #d4d4d8;
+  }
+
+  [data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #09090b;
+    --surface: #141417;
+    --fg: #f4f4f5;
+    --muted: #a1a1aa;
+    --subtle: #85858e;
+    --line: #1f1f23;
+    --line-strong: #2e2e33;
+  }
+
+  :root {
+    --font-body: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    --font-heading: var(--font-body);
+    --font-code: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
+    --heading-weight: 600;
+    --heading-tracking: -0.02em;
+  }
+
+  html {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg);
+  }
+
+  ::selection {
+    background-color: var(--fg);
+    color: var(--bg);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--fg);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility heading {
+  font-family: var(--font-heading);
+  font-weight: var(--heading-weight);
+  letter-spacing: var(--heading-tracking);
+}
+
+@utility label {
+  font-family: var(--font-code);
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  letter-spacing: var(--text-label--letter-spacing);
+  text-transform: uppercase;
+}

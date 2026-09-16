@@ -1,0 +1,53 @@
+---
+import ArrowLeft from "../components/ArrowLeft.astro";
+import Base from "../layouts/Base.astro";
+import { profile, sections } from "../data/profile";
+---
+
+<Base title={`Página não encontrada · ${profile.name}`} description="Este endereço não existe ou mudou de lugar." noindex>
+  <main class="mx-auto flex min-h-dvh max-w-[76rem] flex-col justify-center px-6 py-24 md:px-12 lg:px-16">
+    <div class="sm:grid sm:grid-cols-[10rem_1fr] sm:gap-6">
+      <p class="label pt-3 text-subtle">Erro 404</p>
+
+      <div class="mt-4 max-w-md sm:mt-0">
+        <h1 class="heading text-4xl text-fg sm:text-5xl">Página não encontrada</h1>
+        <p class="mt-6 leading-7 text-muted">Este endereço não existe ou mudou de lugar.</p>
+        <p class="mt-2 font-mono text-sm break-all text-subtle" data-path hidden></p>
+
+        <a
+          href="/"
+          class="group mt-10 inline-flex items-center gap-2 text-sm text-muted underline decoration-subtle/50 underline-offset-4 transition-colors duration-200 hover:text-fg hover:decoration-fg"
+        >
+          <ArrowLeft class="transition-transform duration-300 ease-out group-hover:-translate-x-0.5" />
+          Voltar para o início
+        </a>
+
+        <nav aria-label="Seções do site" class="mt-16 border-t border-line pt-6">
+          <ul class="flex flex-wrap gap-x-6 gap-y-2">
+            {
+              sections.map((section) => (
+                <li>
+                  <a
+                    href={`/#${section.id}`}
+                    class="label -my-1 inline-flex gap-2 py-1 text-subtle transition-colors hover:text-fg"
+                  >
+                    <span class="tabular-nums">{section.n}</span>
+                    {section.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const path = document.querySelector<HTMLElement>("[data-path]");
+    if (path && location.pathname !== "/404" && location.pathname !== "/404.html") {
+      path.textContent = decodeURIComponent(location.pathname);
+      path.hidden = false;
+    }
+  </script>
+</Base>

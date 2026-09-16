@@ -1,0 +1,43 @@
+---
+// Renderiza texto com [rótulo](url) e **destaque**. Nada além disso.
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+
+type Part = { kind: "text" | "link" | "strong"; label: string; href?: string };
+
+const parts: Part[] = [];
+let cursor = 0;
+
+for (const match of text.matchAll(/\[([^\]]+)\]\(([^)\s]+)\)|\*\*([^*]+)\*\*/g)) {
+  const start = match.index ?? 0;
+  if (start > cursor) parts.push({ kind: "text", label: text.slice(cursor, start) });
+  if (match[3]) parts.push({ kind: "strong", label: match[3] });
+  else parts.push({ kind: "link", label: match[1], href: match[2] });
+  cursor = start + match[0].length;
+}
+
+if (cursor < text.length) parts.push({ kind: "text", label: text.slice(cursor) });
+
+const isExternal = (href: string) => /^https?:\/\//.test(href);
+---
+
+{
+  parts.map((part) => {
+    if (part.kind === "strong") return <strong class="font-medium text-fg">{part.label}</strong>;
+    if (part.kind === "text" || !part.href) return part.label;
+    const external = isExternal(part.href);
+    return (
+      <a
+        href={part.href}
+        class="underline decoration-subtle/50 decoration-1 underline-offset-4 transition-colors duration-200 hover:text-fg hover:decoration-fg"
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      >
+        {part.label}
+        {external && <span class="sr-only"> (abre em nova aba)</span>}
+      </a>
+    );
+  })
+}

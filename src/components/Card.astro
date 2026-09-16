@@ -1,0 +1,24 @@
+---
+// Item de lista com a grade editorial: metadado na coluna de 10rem, conteúdo ao lado.
+// Entre lg e xl a coluna direita fica estreita, então o metadado sobe para cima do conteúdo.
+// `interactive` liga o hover; o clique vem do link com overlay em CardTitle.
+interface Props {
+  interactive?: boolean;
+}
+
+const { interactive = false } = Astro.props;
+---
+
+<li
+  class:list={[
+    "relative -mx-4 rounded-sm p-4 transition-colors duration-300 ease-out sm:grid sm:grid-cols-[10rem_1fr] sm:gap-6 lg:block xl:grid",
+    interactive && "group hover:bg-fg/4 focus-within:bg-fg/4",
+  ]}
+>
+  <p class="label pt-1 whitespace-nowrap text-subtle">
+    <slot name="meta" />
+  </p>
+  <div class="mt-2 sm:mt-0 lg:mt-2 xl:mt-0">
+    <slot />
+  </div>
+</li>

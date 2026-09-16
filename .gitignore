@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+.env
+.env.*
+!.env.example
+.claude/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

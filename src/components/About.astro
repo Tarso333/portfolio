@@ -1,0 +1,38 @@
+---
+import { Picture } from "astro:assets";
+import photo from "../assets/tarso.jpg";
+import RichText from "./RichText.astro";
+import { about, portrait } from "../data/profile";
+
+// A foto ocupa a mesma coluna de 10rem das datas em Experiência.
+// Entre lg e xl a coluna direita fica estreita demais, então a foto volta para cima do texto.
+---
+
+<div class="sm:grid sm:grid-cols-[10rem_1fr] sm:gap-6 lg:block xl:grid">
+  <figure class="w-28 sm:w-40">
+    <Picture
+      src={photo}
+      alt={portrait.alt}
+      formats={["avif", "webp"]}
+      layout="constrained"
+      width={160}
+      height={200}
+      fit="cover"
+      position="center"
+      sizes="(min-width: 640px) 160px, 112px"
+      priority
+      class="h-auto w-full rounded-sm grayscale dark:brightness-[0.88]"
+    />
+    <figcaption class="label mt-3 text-subtle">{portrait.caption}</figcaption>
+  </figure>
+
+  <div class="mt-8 space-y-4 leading-7 text-muted sm:mt-0 lg:mt-8 xl:mt-0">
+    {
+      about.map((paragraph) => (
+        <p>
+          <RichText text={paragraph} />
+        </p>
+      ))
+    }
+  </div>
+</div>

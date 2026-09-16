@@ -1,0 +1,45 @@
+---
+// O nome acessível começa pelo texto visível ("Claro / Escuro") e o estado atual vem logo depois.
+---
+
+<button type="button" data-theme-toggle class="group label -my-1 inline-flex items-center gap-1.5 py-1 text-subtle">
+  <span class="text-fg transition-colors dark:text-subtle dark:group-hover:text-muted">Claro</span>
+  <span aria-hidden="true">/</span>
+  <span class="text-subtle transition-colors group-hover:text-muted dark:text-fg">Escuro</span>
+  <span class="sr-only" data-theme-status></span>
+</button>
+
+<script>
+  const root = document.documentElement;
+  const status = document.querySelector<HTMLElement>("[data-theme-status]");
+
+  const render = () => {
+    if (status) status.textContent = `(tema atual: ${root.dataset.theme === "dark" ? "escuro" : "claro"})`;
+  };
+
+  const saved = () => {
+    try {
+      return localStorage.getItem("theme");
+    } catch {
+      return null;
+    }
+  };
+
+  document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
+    const next = root.dataset.theme === "dark" ? "light" : "dark";
+    root.dataset.theme = next;
+    render();
+    try {
+      localStorage.setItem("theme", next);
+    } catch {}
+  });
+
+  // Sem escolha manual salva, acompanha o tema do sistema.
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+    if (saved()) return;
+    root.dataset.theme = event.matches ? "dark" : "light";
+    render();
+  });
+
+  render();
+</script>

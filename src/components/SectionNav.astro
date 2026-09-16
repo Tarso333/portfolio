@@ -1,0 +1,70 @@
+---
+import { sections } from "../data/profile";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<nav aria-label="Seções" class={className}>
+  <ul>
+    {
+      sections.map((section, i) => (
+        <li>
+          <a
+            href={`#${section.id}`}
+            data-nav-link
+            aria-current={i === 0 ? "true" : undefined}
+            class="group flex w-fit items-center gap-4 py-2 text-subtle transition-colors duration-200 hover:text-fg focus-visible:text-fg aria-[current=true]:text-fg"
+          >
+            <span class="font-mono text-xs tabular-nums">{section.n}</span>
+            <span class="h-px w-6 bg-line-strong transition-[width,background-color] duration-200 ease-out group-hover:w-12 group-hover:bg-fg group-focus-visible:w-12 group-focus-visible:bg-fg group-aria-[current=true]:w-12 group-aria-[current=true]:bg-fg" />
+            <span class="text-sm">{section.label}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<script>
+  // Marca a seção ativa: a última cujo topo já passou de 35% da altura da tela.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]")];
+  const targets = links
+    .map((link) => document.getElementById(link.hash.slice(1)))
+    .filter((el): el is HTMLElement => el !== null);
+
+  let scheduled = false;
+
+  const update = () => {
+    scheduled = false;
+    if (targets.length === 0) return;
+
+    const threshold = window.innerHeight * 0.35;
+    let current = targets[0];
+    for (const target of targets) {
+      if (target.getBoundingClientRect().top <= threshold) current = target;
+    }
+
+    const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    if (atBottom) current = targets[targets.length - 1];
+
+    for (const link of links) {
+      if (link.hash === `#${current.id}`) link.setAttribute("aria-current", "true");
+      else link.removeAttribute("aria-current");
+    }
+  };
+
+  const schedule = () => {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(update);
+  };
+
+  window.addEventListener("scroll", schedule, { passive: true });
+  window.addEventListener("resize", schedule);
+  // Primeira medição no próximo frame, para não forçar layout durante o carregamento.
+  schedule();
+</script>

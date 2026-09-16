@@ -1,0 +1,19 @@
+---
+interface Props {
+  id: string;
+  n: string;
+  label: string;
+  class?: string;
+}
+
+const { id, n, label, class: className } = Astro.props;
+---
+
+<section id={id} aria-labelledby={`${id}-titulo`} class:list={["lg:scroll-mt-24", className]}>
+  <div
+    class="sticky top-0 z-20 -mx-6 mb-6 border-b border-line bg-bg px-6 py-4 md:-mx-12 md:px-12 lg:static lg:mx-0 lg:border-0 lg:px-0 lg:py-0"
+  >
+    <h2 id={`${id}-titulo`} class="label text-fg lg:text-subtle">{n} · {label}</h2>
+  </div>
+  <slot />
+</section>

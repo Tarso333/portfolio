@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .bg { fill: #09090b; }
+    .fg { stroke: #f4f4f5; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #f4f4f5; }
+      .fg { stroke: #09090b; }
+    }
+  </style>
+  <rect class="bg" width="32" height="32" rx="3" />
+  <g class="fg" fill="none" stroke-width="2.25">
+    <path d="M11 7.5V20.5Q11 24 14.5 24M7.5 12H14.5" />
+    <path d="M18.5 7.5V24M18.5 16Q18.5 12 22 12Q25.5 12 25.5 16V24" />
+  </g>
+</svg>

@@ -1,0 +1,34 @@
+---
+import ArrowUpRight from "./ArrowUpRight.astro";
+
+// Com href, o link estica um overlay por todo o Card (after:inset-0), tornando o bloco inteiro clicável.
+interface Props {
+  href?: string;
+  hint?: string;
+}
+
+const { href, hint = "abre em nova aba" } = Astro.props;
+---
+
+<h3 class="leading-snug font-medium">
+  {
+    href ? (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-baseline gap-1.5 text-fg/85 transition-colors duration-300 group-focus-within:text-fg group-hover:text-fg after:absolute after:inset-0 after:rounded-sm"
+      >
+        <span>
+          <slot />
+        </span>
+        <ArrowUpRight class="transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        <span class="sr-only">({hint})</span>
+      </a>
+    ) : (
+      <span class="text-fg/85">
+        <slot />
+      </span>
+    )
+  }
+</h3>
