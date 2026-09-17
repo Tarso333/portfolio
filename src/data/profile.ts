@@ -12,6 +12,8 @@ export const profile = {
   links: {
     github: "https://github.com/Tarso333",
     linkedin: "https://www.linkedin.com/in/tarso-hebert/",
+    // PDF em public/: versão do currículo Geral sem telefone.
+    curriculo: "/curriculo-tarso-hebert.pdf",
   },
 };
 

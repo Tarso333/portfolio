@@ -5,9 +5,12 @@ import SectionNav from "./SectionNav.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 import { profile } from "../data/profile";
 
+// O botão de tema é o último item da lista de contatos: assim ele quebra linha junto com os links.
+
 const links = [
   { label: "GitHub", href: profile.links.github, external: true },
   { label: "LinkedIn", href: profile.links.linkedin, external: true },
+  { label: "Currículo", href: profile.links.curriculo, external: true, aviso: "PDF, abre em nova aba" },
   { label: "E-mail", href: `mailto:${profile.email}`, external: false },
 ];
 ---
@@ -24,8 +27,8 @@ const links = [
     <SectionNav class="mt-16 hidden lg:block" />
   </div>
 
-  <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 lg:mt-0">
-    <ul class="flex flex-wrap items-center gap-x-6 gap-y-3" aria-label="Contato">
+  <div class="mt-10 lg:mt-0">
+    <ul class="flex flex-wrap items-center gap-x-6 gap-y-3" aria-label="Contato e preferências">
       {
         links.map((link) => (
           <li class="flex">
@@ -36,12 +39,14 @@ const links = [
             >
               {link.label}
               {link.external ? <ArrowUpRight /> : <MailIcon />}
-              {link.external && <span class="sr-only">(abre em nova aba)</span>}
+              {link.external && <span class="sr-only">({link.aviso ?? "abre em nova aba"})</span>}
             </a>
           </li>
         ))
       }
+      <li class="flex">
+        <ThemeToggle />
+      </li>
     </ul>
-    <ThemeToggle />
   </div>
 </header>
