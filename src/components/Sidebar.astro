@@ -1,5 +1,6 @@
 ---
 import ArrowUpRight from "./ArrowUpRight.astro";
+import MailIcon from "./MailIcon.astro";
 import SectionNav from "./SectionNav.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 import { profile } from "../data/profile";
@@ -23,8 +24,8 @@ const links = [
     <SectionNav class="mt-16 hidden lg:block" />
   </div>
 
-  <div class="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 lg:mt-0">
-    <ul class="flex flex-wrap gap-x-6 gap-y-2" aria-label="Contato">
+  <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 lg:mt-0">
+    <ul class="flex flex-wrap items-center gap-x-6 gap-y-3" aria-label="Contato">
       {
         links.map((link) => (
           <li class="flex">
@@ -34,7 +35,7 @@ const links = [
               {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
             >
               {link.label}
-              {link.external && <ArrowUpRight />}
+              {link.external ? <ArrowUpRight /> : <MailIcon />}
               {link.external && <span class="sr-only">(abre em nova aba)</span>}
             </a>
           </li>

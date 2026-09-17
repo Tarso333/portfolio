@@ -1,12 +1,37 @@
 ---
-// O nome acessível começa pelo texto visível ("Claro / Escuro") e o estado atual vem logo depois.
+// Botão só de ícone, na mesma linha dos contatos: mostra o sol no tema escuro
+// (clique leva ao claro) e a lua no tema claro. O nome acessível fica no sr-only.
 ---
 
-<button type="button" data-theme-toggle class="group label -my-1 inline-flex items-center gap-1.5 py-1 text-subtle">
-  <span class="text-fg transition-colors dark:text-subtle dark:group-hover:text-muted">Claro</span>
-  <span aria-hidden="true">/</span>
-  <span class="text-subtle transition-colors group-hover:text-muted dark:text-fg">Escuro</span>
-  <span class="sr-only" data-theme-status></span>
+<button
+  type="button"
+  data-theme-toggle
+  class="-mx-1 -my-1 inline-flex items-center px-1 py-1 text-muted transition-colors hover:text-fg"
+>
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.2"
+    stroke-linecap="round"
+    class="hidden size-4 dark:block"
+  >
+    <circle cx="8" cy="8" r="3.1" />
+    <path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6M3.2 3.2l1.1 1.1M11.7 11.7l1.1 1.1M12.8 3.2l-1.1 1.1M4.3 11.7l-1.1 1.1" />
+  </svg>
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.2"
+    stroke-linejoin="round"
+    class="size-4 dark:hidden"
+  >
+    <path d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8Z" />
+  </svg>
+  <span class="sr-only" data-theme-status>Alternar tema</span>
 </button>
 
 <script>
@@ -14,7 +39,9 @@
   const status = document.querySelector<HTMLElement>("[data-theme-status]");
 
   const render = () => {
-    if (status) status.textContent = `(tema atual: ${root.dataset.theme === "dark" ? "escuro" : "claro"})`;
+    if (!status) return;
+    const escuro = root.dataset.theme === "dark";
+    status.textContent = escuro ? "Mudar para o tema claro (atual: escuro)" : "Mudar para o tema escuro (atual: claro)";
   };
 
   const saved = () => {
