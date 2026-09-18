@@ -1,0 +1,48 @@
+---
+import ArrowUpRight from "./ArrowUpRight.astro";
+import MailIcon from "./MailIcon.astro";
+import { contact, profile } from "../data/profile";
+
+const links = [
+  { label: "LinkedIn", href: profile.links.linkedin, aviso: "abre em nova aba" },
+  { label: "GitHub", href: profile.links.github, aviso: "abre em nova aba" },
+  { label: "Currículo em PDF", href: profile.links.curriculo, aviso: "PDF, abre em nova aba" },
+];
+---
+
+<div class="sm:grid sm:grid-cols-[10rem_1fr] sm:gap-6 lg:block xl:grid">
+  <p class="label pt-1 text-subtle">{profile.location}</p>
+
+  <div class="mt-4 sm:mt-0 lg:mt-4 xl:mt-0">
+    <p class="max-w-prose leading-7 text-muted">{contact.intro}</p>
+
+    <a
+      href={`mailto:${profile.email}`}
+      class="group mt-6 inline-flex items-center gap-2.5 text-lg text-fg/85 transition-colors duration-300 hover:text-fg"
+    >
+      <MailIcon class="text-subtle transition-colors duration-300 group-hover:text-fg" />
+      <span class="underline decoration-subtle/50 underline-offset-[6px] transition-colors duration-300 group-hover:decoration-fg">
+        {profile.email}
+      </span>
+    </a>
+
+    <ul class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+      {
+        links.map((link) => (
+          <li class="flex">
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="label -my-1 inline-flex items-center gap-1.5 py-1 text-muted transition-colors hover:text-fg"
+            >
+              {link.label}
+              <ArrowUpRight />
+              <span class="sr-only">({link.aviso})</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>

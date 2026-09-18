@@ -20,7 +20,7 @@ interface Props {
 
 const {
   title = `${profile.name} · ${profile.role}`,
-  description = "Tarso Hebert, desenvolvedor de software em Brasília. Python, automação e back-end na Justiça Federal: 40 robôs em produção, usados por 370 pessoas.",
+  description = "Tarso Hebert, desenvolvedor de software em Brasília. Back-end e automação em Python na Justiça Federal: 40 automações em produção, 370 usuários e 1,9 milhão de processos analisados.",
   noindex = false,
 } = Astro.props;
 
@@ -88,12 +88,14 @@ const person = {
     {!noindex && <script is:inline type="application/ld+json" set:html={JSON.stringify(person)} />}
 
     <script is:inline>
+      // Escuro é o padrão do site; o claro fica disponível no botão e é lembrado.
       try {
-        const saved = localStorage.getItem("theme");
-        const dark = matchMedia("(prefers-color-scheme: dark)").matches;
-        document.documentElement.dataset.theme = saved ?? (dark ? "dark" : "light");
+        document.documentElement.dataset.theme = localStorage.getItem("theme") ?? "dark";
       } catch {
         document.documentElement.dataset.theme = "dark";
+      }
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.dataset.motion = "on";
       }
     </script>
   </head>

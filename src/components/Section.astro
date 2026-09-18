@@ -4,12 +4,14 @@ interface Props {
   n: string;
   label: string;
   class?: string;
+  // A primeira seção não anima: ela já está na tela no primeiro carregamento.
+  reveal?: boolean;
 }
 
-const { id, n, label, class: className } = Astro.props;
+const { id, n, label, class: className, reveal = true } = Astro.props;
 ---
 
-<section id={id} aria-labelledby={`${id}-titulo`} class:list={["lg:scroll-mt-24", className]}>
+<section id={id} data-reveal={reveal ? "" : undefined} aria-labelledby={`${id}-titulo`} class:list={["lg:scroll-mt-24", className]}>
   <div
     class="sticky top-0 z-20 -mx-6 mb-6 border-b border-line bg-bg px-6 py-4 md:-mx-12 md:px-12 lg:static lg:mx-0 lg:border-0 lg:px-0 lg:py-0"
   >
@@ -17,3 +19,25 @@ const { id, n, label, class: className } = Astro.props;
   </div>
   <slot />
 </section>
+
+<script>
+  // Mostra a seção quando ela entra na tela. Sem JS ou com movimento reduzido, tudo já nasce visível.
+  const alvos = document.querySelectorAll<HTMLElement>("[data-reveal]");
+
+  if (!("IntersectionObserver" in window)) {
+    alvos.forEach((alvo) => (alvo.dataset.visible = ""));
+  } else {
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        for (const entrada of entradas) {
+          if (!entrada.isIntersecting) continue;
+          (entrada.target as HTMLElement).dataset.visible = "";
+          observador.unobserve(entrada.target);
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
+    );
+
+    alvos.forEach((alvo) => observador.observe(alvo));
+  }
+</script>

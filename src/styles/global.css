@@ -119,3 +119,19 @@
   letter-spacing: var(--text-label--letter-spacing);
   text-transform: uppercase;
 }
+
+/* Entrada sutil das seções: só com JS ativo e sem prefers-reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-motion="on"] [data-reveal] {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 500ms var(--ease-out),
+      transform 500ms var(--ease-out);
+  }
+
+  :root[data-motion="on"] [data-reveal][data-visible] {
+    opacity: 1;
+    transform: none;
+  }
+}

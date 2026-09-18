@@ -4,9 +4,9 @@ export const profile = {
   name: "Tarso Hebert",
   fullName: "Tarso Hebert Camilo Vieira",
   role: "Desenvolvedor de Software",
-  focus: ["Python", "Automação", "Back-end"],
+  focus: ["Python", "Backend", "Automação"],
   tagline:
-    "Construo robôs e sistemas para a Justiça Federal. A suíte em que trabalho tem 40 automações em produção, usadas por 370 pessoas.",
+    "Desenvolvo back-end e automações que rodam em produção na Justiça Federal, do levantamento de requisitos aos testes e à sustentação.",
   location: "Brasília, DF",
   email: "tarsohebert.ti@outlook.com",
   links: {
@@ -21,15 +21,17 @@ export const sections = [
   { id: "sobre", n: "01", label: "Sobre" },
   { id: "experiencia", n: "02", label: "Experiência" },
   { id: "projetos", n: "03", label: "Projetos" },
+  { id: "stack", n: "04", label: "Stack" },
+  { id: "contato", n: "05", label: "Contato" },
 ] as const;
 
 export type SectionId = (typeof sections)[number]["id"];
 
 // Links no texto usam a sintaxe [rótulo](url), renderizada por RichText.astro.
 export const about = [
-  "Sou desenvolvedor de software no [Tribunal Regional Federal da 1ª Região](https://www.trf1.jus.br), na equipe que automatiza o trabalho judicial. Escrevo robôs em Python e Selenium que operam o PJe em 13 estados e no Distrito Federal, e aplicações web que colocam essas automações nas mãos de quem precisa delas.",
-  "Me importo com confiabilidade. Uma automação que falha de vez em quando gera mais trabalho do que economiza, então invisto em testes, sincronização baseada em estado e revisão de código. Também gosto da parte menos técnica: sentar com as áreas usuárias e transformar uma rotina jurídica em especificação.",
-  "Curso Ciência da Computação na [Universidade Católica de Brasília](https://ucb.catolica.edu.br), com conclusão prevista para 2027. Nas horas livres, desenvolvo projetos próprios, como o [APROVA](https://github.com/Tarso333/ConcursoSedesDF), plataforma desktop de estudos para concursos, e o [PropostaJá](https://github.com/Tarso333/propostaja), app de orçamentos para profissionais autônomos.",
+  "Sou desenvolvedor de software no [Tribunal Regional Federal da 1ª Região](https://www.trf1.jus.br). Trabalho no ciclo completo: levanto o requisito com a área usuária, desenvolvo em Python, escrevo os testes e sustento o que já está rodando. O que entrego fica em produção e é usado todo dia.",
+  "Automação de processos é a minha especialidade, mas o trabalho é de engenharia: aplicações web em Flask e Django, integração entre sistemas, empacotamento e entrega contínua. Confiabilidade é o critério que uso para decidir. Uma automação que falha de vez em quando gera mais trabalho do que economiza, então invisto em testes, sincronização baseada em estado e revisão de código.",
+  "Curso Ciência da Computação na [Universidade Católica de Brasília](https://ucb.catolica.edu.br), com conclusão prevista para 2027. Fora do trabalho, desenvolvo projetos próprios, como o [APROVA](https://github.com/Tarso333/ConcursoSedesDF), plataforma desktop de estudos para concursos, e o [PropostaJá](https://github.com/Tarso333/propostaja), app de orçamentos para profissionais autônomos.",
 ];
 
 export const portrait = {
@@ -46,6 +48,8 @@ export type Experience = {
   via?: string;
   location: string;
   summary: string;
+  // Números de impacto exibidos em destaque no topo do cargo.
+  metrics?: { value: string; label: string }[];
   highlights: string[];
   // Depoimento autorizado, sem identificar a pessoa. Texto literal, sem destaques.
   quote?: { text: string; source: string };
@@ -61,7 +65,13 @@ export const experience: Experience[] = [
     via: "G&E Serviços Terceirizados",
     location: "Brasília, DF",
     summary:
-      "Suíte de automação do tribunal: **40** robôs em produção, **370** usuários e mais de **1,9 milhão** de processos analisados, com **97,32%** de sucesso em 15 mil execuções.",
+      "Desenvolvo e sustento a suíte de automação do tribunal, que opera o sistema judicial PJe em 13 estados e no Distrito Federal, e aplicações web que entregam essas automações às áreas usuárias.",
+    metrics: [
+      { value: "40", label: "automações em produção" },
+      { value: "370", label: "usuários atendidos" },
+      { value: "1,9 mi", label: "processos analisados" },
+      { value: "97,32%", label: "de sucesso em 15 mil execuções" },
+    ],
     highlights: [
       "Reduzi falhas intermitentes de **~50%** para **~9%** com sincronização baseada em estado e suítes em pytest com até **99%** de cobertura.",
       "Integrei o Google Gemini à análise de documentos e levei a triagem de **20 min** para **1 min**.",
@@ -99,7 +109,15 @@ export const experience: Experience[] = [
   },
 ];
 
+export type ProjectGroup = "proprios" | "trabalho";
+
+export const projectGroups: { id: ProjectGroup; label: string; note: string }[] = [
+  { id: "proprios", label: "Projetos próprios", note: "Produtos que desenho e desenvolvo do zero, fora do ambiente corporativo." },
+  { id: "trabalho", label: "No TRF1", note: "Sistemas internos do tribunal: sem link público, porque o código e o acesso são restritos." },
+];
+
 export type Project = {
+  group: ProjectGroup;
   name: string;
   kind: string;
   year: number;
@@ -114,6 +132,7 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    group: "trabalho",
     name: "Testes automatizados da suíte de RPA",
     kind: "Qualidade",
     year: 2026,
@@ -123,6 +142,7 @@ export const projects: Project[] = [
     stack: ["pytest", "SonarQube", "GitLab CI"],
   },
   {
+    group: "trabalho",
     name: "Consulta processual 1º e 2º grau",
     kind: "RPA",
     year: 2026,
@@ -132,6 +152,7 @@ export const projects: Project[] = [
     stack: ["Python", "Selenium", "openpyxl"],
   },
   {
+    group: "trabalho",
     name: "Registrar voto",
     kind: "RPA",
     year: 2026,
@@ -141,6 +162,7 @@ export const projects: Project[] = [
     stack: ["Python", "Selenium", "pytest", "SonarQube"],
   },
   {
+    group: "trabalho",
     name: "Pagamento de perícias",
     kind: "RPA",
     year: 2026,
@@ -150,6 +172,7 @@ export const projects: Project[] = [
     stack: ["Python", "Selenium", "pandas", "pytest"],
   },
   {
+    group: "proprios",
     name: "APROVA",
     kind: "Desktop",
     year: 2026,
@@ -161,6 +184,7 @@ export const projects: Project[] = [
     hrefKind: "repo",
   },
   {
+    group: "proprios",
     name: "PropostaJá",
     kind: "Mobile",
     year: 2026,
@@ -172,6 +196,7 @@ export const projects: Project[] = [
     hrefKind: "repo",
   },
   {
+    group: "proprios",
     name: "API Monitor",
     kind: "Web",
     year: 2025,
@@ -183,6 +208,22 @@ export const projects: Project[] = [
     hrefKind: "demo",
   },
 ];
+
+// Apenas tecnologias que aparecem na experiência ou nos projetos deste site.
+export const stack = [
+  { label: "Back-end", items: ["Python", "Django", "Django REST Framework", "Flask", "SQLAlchemy", "Node.js", "APIs REST"] },
+  { label: "Automação", items: ["Selenium", "RPA", "web scraping", "pandas", "openpyxl", "PyInstaller"] },
+  { label: "Front-end", items: ["React", "Next.js", "TypeScript", "Astro", "Tailwind CSS"] },
+  { label: "Dados", items: ["PostgreSQL", "SQLite", "Redis", "Drizzle ORM"] },
+  { label: "Qualidade", items: ["pytest", "SonarQube", "code review", "Conventional Commits"] },
+  { label: "DevOps", items: ["Docker", "Docker Compose", "GitLab CI", "Nginx", "Git", "Linux"] },
+  { label: "IA aplicada", items: ["Google Gemini", "classificadores de documentos", "Ollama"] },
+];
+
+export const contact = {
+  intro:
+    "Aberto a conversas sobre back-end, automação e confiabilidade de sistemas. O caminho mais direto é o e-mail.",
+};
 
 export const education = {
   course: "Bacharelado em Ciência da Computação",

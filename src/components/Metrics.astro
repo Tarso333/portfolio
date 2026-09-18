@@ -1,0 +1,19 @@
+---
+// Números de impacto do cargo. Sem caixas nem ícones: só dois fios finos e a escala tipográfica.
+interface Props {
+  items: { value: string; label: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<dl class="mt-5 grid grid-cols-2 gap-x-6 gap-y-5 border-y border-line py-5">
+  {
+    items.map((item) => (
+      <div class="flex flex-col-reverse gap-1">
+        <dt class="label text-subtle">{item.label}</dt>
+        <dd class="heading text-2xl tabular-nums text-fg">{item.value}</dd>
+      </div>
+    ))
+  }
+</dl>

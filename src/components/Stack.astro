@@ -1,0 +1,16 @@
+---
+import { stack } from "../data/profile";
+
+// Mesma grade editorial das outras seções: categoria na coluna de 10rem, tecnologias ao lado.
+---
+
+<dl class="divide-y divide-line border-y border-line">
+  {
+    stack.map((grupo) => (
+      <div class="py-4 sm:grid sm:grid-cols-[10rem_1fr] sm:gap-6 lg:block xl:grid">
+        <dt class="label pt-0.5 text-subtle">{grupo.label}</dt>
+        <dd class="mt-2 font-mono text-sm leading-6 text-muted sm:mt-0 lg:mt-2 xl:mt-0">{grupo.items.join(" · ")}</dd>
+      </div>
+    ))
+  }
+</dl>

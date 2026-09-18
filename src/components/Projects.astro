@@ -4,39 +4,51 @@ import Card from "./Card.astro";
 import CardTitle from "./CardTitle.astro";
 import RichText from "./RichText.astro";
 import TagList from "./TagList.astro";
-import { profile, projects } from "../data/profile";
+import { profile, projectGroups, projects } from "../data/profile";
 
+// Projetos próprios primeiro; os do TRF1 depois, com um subtítulo explicando a falta de link.
 // O link final fica alinhado à coluna de conteúdo dos cards: 10rem de metadado + 1.5rem de gap.
 ---
 
-<ul class="-mt-4 space-y-4">
-  {
-    projects.map((project) => (
-      <Card interactive={Boolean(project.href)}>
-        <Fragment slot="meta">
-          {project.year} · {project.kind}
-        </Fragment>
+{
+  projectGroups.map((grupo, indice) => (
+    <section aria-label={grupo.label} class:list={[indice > 0 && "mt-14"]}>
+      <header class="sm:grid sm:grid-cols-[10rem_1fr] sm:gap-6 lg:block xl:grid">
+        <h3 class="label pt-0.5 text-fg">{grupo.label}</h3>
+        <p class="mt-1 max-w-prose text-sm leading-6 text-subtle sm:mt-0 lg:mt-1 xl:mt-0">{grupo.note}</p>
+      </header>
 
-        <CardTitle
-          href={project.href}
-          hint={project.hrefKind === "demo" ? "abre a demo em nova aba" : "abre o repositório no GitHub em nova aba"}
-        >
-          {project.name}
-        </CardTitle>
-        <p class="mt-0.5 text-sm text-subtle">
-          {project.context}
-          {project.hrefKind === "demo" && " · demo no ar"}
-        </p>
+      <ul class="mt-2 space-y-4">
+        {projects
+          .filter((project) => project.group === grupo.id)
+          .map((project) => (
+            <Card interactive={Boolean(project.href)}>
+              <Fragment slot="meta">
+                {project.year} · {project.kind}
+              </Fragment>
 
-        <p class="mt-3 text-sm leading-6 text-muted">
-          <RichText text={project.description} />
-        </p>
+              <CardTitle
+                href={project.href}
+                hint={project.hrefKind === "demo" ? "abre a demo em nova aba" : "abre o repositório no GitHub em nova aba"}
+              >
+                {project.name}
+              </CardTitle>
+              <p class="mt-0.5 text-sm text-subtle">
+                {project.context}
+                {project.hrefKind === "demo" && " · demo no ar"}
+              </p>
 
-        <TagList items={project.stack} />
-      </Card>
-    ))
-  }
-</ul>
+              <p class="mt-3 text-sm leading-6 text-muted">
+                <RichText text={project.description} />
+              </p>
+
+              <TagList items={project.stack} />
+            </Card>
+          ))}
+      </ul>
+    </section>
+  ))
+}
 
 <p class="mt-10 sm:ml-[11.5rem] lg:ml-0 xl:ml-[11.5rem]">
   <a
