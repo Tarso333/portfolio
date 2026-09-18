@@ -29,9 +29,9 @@ export type SectionId = (typeof sections)[number]["id"];
 
 // Links no texto usam a sintaxe [rótulo](url), renderizada por RichText.astro.
 export const about = [
-  "Sou desenvolvedor de software no [Tribunal Regional Federal da 1ª Região](https://www.trf1.jus.br). Trabalho no ciclo completo: levanto o requisito com a área usuária, desenvolvo em Python, escrevo os testes e sustento o que já está rodando. O que entrego fica em produção e é usado todo dia.",
-  "Automação de processos é a minha especialidade, mas o trabalho é de engenharia: aplicações web em Flask e Django, integração entre sistemas, empacotamento e entrega contínua. Confiabilidade é o critério que uso para decidir. Uma automação que falha de vez em quando gera mais trabalho do que economiza, então invisto em testes, sincronização baseada em estado e revisão de código.",
-  "Curso Ciência da Computação na [Universidade Católica de Brasília](https://ucb.catolica.edu.br), com conclusão prevista para 2027. Fora do trabalho, desenvolvo projetos próprios, como o [APROVA](https://github.com/Tarso333/ConcursoSedesDF), plataforma desktop de estudos para concursos, e o [PropostaJá](https://github.com/Tarso333/propostaja), app de orçamentos para profissionais autônomos.",
+  "Sou desenvolvedor de software no [Tribunal Regional Federal da 1ª Região](https://www.trf1.jus.br). Trabalho em sistemas que rodam todo dia: escrevo em Python e Selenium as automações que operam os sistemas judiciais e as aplicações web que entregam essas automações a quem usa.",
+  "Levanto o requisito com quem vive o problema, quase sempre fora da área técnica, e traduzo a rotina em especificação. O resto é engenharia: testes, revisão de código e sustentação do que já está em produção. Confiabilidade é o critério que uso para decidir — uma automação que falha de vez em quando devolve o trabalho que deveria ter tirado.",
+  "Curso Ciência da Computação na [Universidade Católica de Brasília](https://ucb.catolica.edu.br), com conclusão prevista para 2027, e mantenho projetos próprios fora do trabalho: o [APROVA](https://github.com/Tarso333/ConcursoSedesDF), plataforma desktop de estudos para concursos, e o [PropostaJá](https://github.com/Tarso333/propostaja), app de orçamentos para autônomos.",
 ];
 
 export const portrait = {
