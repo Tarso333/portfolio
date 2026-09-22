@@ -1,10 +1,13 @@
 ---
 // Renderiza texto com [rótulo](url) e **destaque**. Nada além disso.
+import { getContent } from "../i18n";
+
 interface Props {
   text: string;
 }
 
 const { text } = Astro.props;
+const { ui } = getContent(Astro.currentLocale);
 
 type Part = { kind: "text" | "link" | "strong"; label: string; href?: string };
 
@@ -36,7 +39,7 @@ const isExternal = (href: string) => /^https?:\/\//.test(href);
         {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       >
         {part.label}
-        {external && <span class="sr-only"> (abre em nova aba)</span>}
+        {external && <span class="sr-only"> ({ui.newTab})</span>}
       </a>
     );
   })

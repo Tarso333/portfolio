@@ -1,12 +1,13 @@
 """
-Gera public/og.png (1200x630), a imagem que aparece ao compartilhar o site.
+Gera public/og.png e public/og-en.png (1200x630), as imagens que aparecem ao
+compartilhar o site em português e em inglês.
 
 Uso:
     python scripts/gerar-og.py
 
 Monta um HTML com as fontes e a foto embutidas em base64 e o renderiza com o
 Edge ou o Chrome em modo headless. Rode de novo sempre que o nome, o cargo,
-a foto ou os números mudarem.
+a foto ou os números mudarem (nos dois idiomas, em VERSOES).
 """
 
 import base64
@@ -19,10 +20,24 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 
 NOME = "Tarso Hebert"
-CARGO = "Desenvolvedor de Software"
-FOCO = "Python · Backend · Automação"
 DOMINIO = "tarsohebert.dev.br"
-NUMEROS = [("40", "automações em produção"), ("370", "usuários"), ("97,32%", "de sucesso")]
+
+VERSOES = [
+    {
+        "arquivo": "og.png",
+        "cargo": "Desenvolvedor de Software",
+        "foco": "Python · Backend · Automação",
+        "numeros": [("40", "automações em produção"), ("370", "usuários"), ("97,32%", "de sucesso")],
+        "local": "Brasília, DF",
+    },
+    {
+        "arquivo": "og-en.png",
+        "cargo": "Software Engineer",
+        "foco": "Python · Backend · Automation",
+        "numeros": [("40", "bots in production"), ("370", "users"), ("97.32%", "success rate")],
+        "local": "Brasília, Brazil",
+    },
+]
 
 NAVEGADORES = [
     Path("C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"),
@@ -36,13 +51,13 @@ def b64(caminho: Path) -> str:
     return base64.b64encode(caminho.read_bytes()).decode()
 
 
-def html() -> str:
+def html(versao: dict) -> str:
     fontes = RAIZ / "node_modules/@fontsource"
     sans400 = b64(fontes / "ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2")
     sans600 = b64(fontes / "ibm-plex-sans/files/ibm-plex-sans-latin-600-normal.woff2")
     mono400 = b64(fontes / "ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2")
     foto = b64(RAIZ / "src/assets/tarso.jpg")
-    numeros = '<span class="dot">·</span>'.join(f"<span><b>{v}</b> {r}</span>" for v, r in NUMEROS)
+    numeros = '<span class="dot">·</span>'.join(f"<span><b>{v}</b> {r}</span>" for v, r in versao["numeros"])
 
     return f"""<!doctype html><html><head><meta charset="utf-8"><style>
 @font-face {{ font-family: Plex; font-weight: 400; src: url(data:font/woff2;base64,{sans400}) format("woff2"); }}
@@ -66,13 +81,13 @@ html, body {{ width: 1200px; height: 630px; overflow: hidden; background: #09090
   <div class="left">
     <p class="label">{DOMINIO}</p>
     <p class="name">{NOME}</p>
-    <p class="role">{CARGO}</p>
-    <p class="focus">{FOCO}</p>
+    <p class="role">{versao["cargo"]}</p>
+    <p class="focus">{versao["foco"]}</p>
     <p class="stats">{numeros}</p>
   </div>
   <div class="right">
     <img class="photo" src="data:image/jpeg;base64,{foto}" alt="">
-    <p class="label">Brasília, DF</p>
+    <p class="label">{versao["local"]}</p>
   </div>
 </div></body></html>"""
 
@@ -83,11 +98,18 @@ def main() -> int:
         print("Edge ou Chrome não encontrado. Ajuste a lista NAVEGADORES.", file=sys.stderr)
         return 1
 
+    for versao in VERSOES:
+        destino = RAIZ / "public" / versao["arquivo"]
+        renderizar(navegador, html(versao), destino)
+        print(f"gerado: {destino} ({destino.stat().st_size // 1024} KB)")
+    return 0
+
+
+def renderizar(navegador: Path, pagina: str, destino: Path) -> None:
     with tempfile.TemporaryDirectory() as tmp:
         pasta = Path(tmp)
         origem = pasta / "og.html"
-        origem.write_text(html(), encoding="utf8")
-        destino = RAIZ / "public/og.png"
+        origem.write_text(pagina, encoding="utf8")
 
         subprocess.run(
             [
@@ -106,9 +128,6 @@ def main() -> int:
             check=True,
             capture_output=True,
         )
-
-    print(f"gerado: {destino} ({destino.stat().st_size // 1024} KB)")
-    return 0
 
 
 if __name__ == "__main__":

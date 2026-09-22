@@ -1,38 +1,51 @@
 ---
 import ArrowLeft from "../components/ArrowLeft.astro";
 import Base from "../layouts/Base.astro";
-import { profile, sections } from "../data/profile";
+import { profile } from "../data/profile";
+import { getContent, homePath } from "../i18n";
+
+// A Vercel serve um único 404.html para qualquer rota. Ele nasce em português e,
+// se o endereço começar com /en/, o script troca os textos pelos do inglês (data-en).
+const pt = getContent("pt");
+const en = getContent("en");
+const title = (c: typeof pt) => `${c.ui.notFound.title} · ${profile.name}`;
 ---
 
-<Base title={`Página não encontrada · ${profile.name}`} description="Este endereço não existe ou mudou de lugar." noindex>
+<Base title={title(pt)} description={pt.ui.notFound.text} noindex>
   <main class="mx-auto flex min-h-dvh max-w-[76rem] flex-col justify-center px-6 py-24 md:px-12 lg:px-16">
     <div class="sm:grid sm:grid-cols-[10rem_1fr] sm:gap-6">
-      <p class="label pt-3 text-subtle">Erro 404</p>
+      <p class="label pt-3 text-subtle" data-en={en.ui.notFound.code}>{pt.ui.notFound.code}</p>
 
       <div class="mt-4 max-w-md sm:mt-0">
-        <h1 class="heading text-4xl text-fg sm:text-5xl">Página não encontrada</h1>
-        <p class="mt-6 leading-7 text-muted">Este endereço não existe ou mudou de lugar.</p>
+        <h1 class="heading text-4xl text-fg sm:text-5xl" data-en={en.ui.notFound.title}>{pt.ui.notFound.title}</h1>
+        <p class="mt-6 leading-7 text-muted" data-en={en.ui.notFound.text}>{pt.ui.notFound.text}</p>
         <p class="mt-2 font-mono text-sm break-all text-subtle" data-path hidden></p>
 
         <a
-          href="/"
+          href={homePath("pt")}
+          data-en-href={homePath("en")}
           class="group mt-10 inline-flex items-center gap-2 text-sm text-muted underline decoration-subtle/50 underline-offset-4 transition-colors duration-200 hover:text-fg hover:decoration-fg"
         >
           <ArrowLeft class="transition-transform duration-300 ease-out group-hover:-translate-x-0.5" />
-          Voltar para o início
+          <span data-en={en.ui.notFound.back}>{pt.ui.notFound.back}</span>
         </a>
 
-        <nav aria-label="Seções do site" class="mt-16 border-t border-line pt-6">
+        <nav
+          aria-label={pt.ui.notFound.navLabel}
+          data-en-label={en.ui.notFound.navLabel}
+          class="mt-16 border-t border-line pt-6"
+        >
           <ul class="flex flex-wrap gap-x-6 gap-y-2">
             {
-              sections.map((section) => (
+              pt.sections.map((section, i) => (
                 <li>
                   <a
-                    href={`/#${section.id}`}
+                    href={`${homePath("pt")}#${section.id}`}
+                    data-en-href={`${homePath("en")}#${en.sections[i].id}`}
                     class="label -my-1 inline-flex gap-2 py-1 text-subtle transition-colors hover:text-fg"
                   >
                     <span class="tabular-nums">{section.n}</span>
-                    {section.label}
+                    <span data-en={en.sections[i].label}>{section.label}</span>
                   </a>
                 </li>
               ))
@@ -42,6 +55,16 @@ import { profile, sections } from "../data/profile";
       </div>
     </div>
   </main>
+
+  <script is:inline define:vars={{ enTitle: title(en), enLang: en.htmlLang }}>
+    if (/^\/en(\/|$)/.test(location.pathname)) {
+      document.documentElement.lang = enLang;
+      document.title = enTitle;
+      document.querySelectorAll("[data-en]").forEach((el) => (el.textContent = el.dataset.en));
+      document.querySelectorAll("[data-en-href]").forEach((el) => (el.href = el.dataset.enHref));
+      document.querySelectorAll("[data-en-label]").forEach((el) => el.setAttribute("aria-label", el.dataset.enLabel));
+    }
+  </script>
 
   <script>
     const path = document.querySelector<HTMLElement>("[data-path]");

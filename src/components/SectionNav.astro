@@ -1,17 +1,18 @@
 ---
-import { sections } from "../data/profile";
+import { getContent } from "../i18n";
 
 interface Props {
   class?: string;
 }
 
 const { class: className } = Astro.props;
+const c = getContent(Astro.currentLocale);
 ---
 
-<nav aria-label="Seções" class={className}>
+<nav aria-label={c.ui.navLabel} class={className}>
   <ul>
     {
-      sections.map((section, i) => (
+      c.sections.map((section, i) => (
         <li>
           <a
             href={`#${section.id}`}

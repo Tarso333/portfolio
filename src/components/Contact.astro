@@ -1,20 +1,23 @@
 ---
 import ArrowUpRight from "./ArrowUpRight.astro";
 import MailIcon from "./MailIcon.astro";
-import { contact, profile } from "../data/profile";
+import { profile } from "../data/profile";
+import { getContent } from "../i18n";
+
+const c = getContent(Astro.currentLocale);
 
 const links = [
-  { label: "LinkedIn", href: profile.links.linkedin, aviso: "abre em nova aba" },
-  { label: "GitHub", href: profile.links.github, aviso: "abre em nova aba" },
-  { label: "Currículo em PDF", href: profile.links.curriculo, aviso: "PDF, abre em nova aba" },
+  { label: "LinkedIn", href: profile.links.linkedin, aviso: c.ui.newTab },
+  { label: "GitHub", href: profile.links.github, aviso: c.ui.newTab },
+  { label: c.ui.resumeLong, href: c.resume, aviso: c.ui.pdfNewTab },
 ];
 ---
 
 <div class="sm:grid sm:grid-cols-[10rem_1fr] sm:gap-6 lg:block xl:grid">
-  <p class="label pt-1 text-subtle">{profile.location}</p>
+  <p class="label pt-1 text-subtle">{c.location}</p>
 
   <div class="mt-4 sm:mt-0 lg:mt-4 xl:mt-0">
-    <p class="max-w-prose leading-7 text-muted">{contact.intro}</p>
+    <p class="max-w-prose leading-7 text-muted">{c.contact.intro}</p>
 
     <a
       href={`mailto:${profile.email}`}

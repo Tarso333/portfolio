@@ -11,6 +11,7 @@ import plexSans600 from "@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-600
 import plexMono400 from "@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2?url";
 
 import { profile } from "../data/profile";
+import { getContent, homePath, languages, toLang } from "../i18n";
 
 interface Props {
   title?: string;
@@ -18,37 +19,47 @@ interface Props {
   noindex?: boolean;
 }
 
+const lang = toLang(Astro.currentLocale);
+const c = getContent(lang);
+
 const {
-  title = `${profile.name} · ${profile.role}`,
-  description = "Tarso Hebert, desenvolvedor de software em Brasília. Back-end e automação em Python na Justiça Federal: 40 automações em produção, 370 usuários e 1,9 milhão de processos analisados.",
+  title = `${profile.name} · ${c.role}`,
+  description = c.meta.description,
   noindex = false,
 } = Astro.props;
 
 const site = Astro.site ?? new URL(Astro.url.origin);
 const canonical = new URL(Astro.url.pathname, site);
-const ogImage = new URL("/og.png", site);
+const ogImage = new URL(c.meta.ogImage, site);
+
+// Cada idioma aponta para as versões equivalentes; x-default é a raiz em português.
+const alternates = languages.map((code) => ({
+  hreflang: getContent(code).htmlLang,
+  href: new URL(homePath(code), site).href,
+}));
+const otherLocales = languages.filter((code) => code !== lang).map((code) => getContent(code).ogLocale);
 
 const person = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: profile.fullName,
   alternateName: profile.name,
-  url: site.href,
+  url: new URL(homePath(lang), site).href,
   image: ogImage.href,
-  jobTitle: profile.role,
+  jobTitle: c.meta.jobTitle,
   address: {
     "@type": "PostalAddress",
     addressLocality: "Brasília",
     addressRegion: "DF",
     addressCountry: "BR",
   },
-  knowsAbout: ["Python", "Automação de processos (RPA)", "Selenium", "Django", "Flask", "Back-end"],
+  knowsAbout: c.meta.knowsAbout,
   sameAs: [profile.links.github, profile.links.linkedin],
 };
 ---
 
 <!doctype html>
-<html lang="pt-BR">
+<html lang={c.htmlLang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -56,6 +67,8 @@ const person = {
     <meta name="description" content={description} />
     <meta name="author" content={profile.fullName} />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    {!noindex && alternates.map((alt) => <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />)}
+    {!noindex && <link rel="alternate" hreflang="x-default" href={alternates[0].href} />}
 
     <meta name="color-scheme" content="dark light" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#09090b" />
@@ -66,7 +79,8 @@ const person = {
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale" content={c.ogLocale} />
+    {otherLocales.map((locale) => <meta property="og:locale:alternate" content={locale} />)}
     <meta property="og:site_name" content={profile.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -75,7 +89,7 @@ const person = {
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${profile.name}, ${profile.role}. ${profile.focus.join(", ")}.`} />
+    <meta property="og:image:alt" content={c.meta.ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />

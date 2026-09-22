@@ -1,5 +1,6 @@
 ---
 import ArrowUpRight from "./ArrowUpRight.astro";
+import { getContent } from "../i18n";
 
 // Com href, o link estica um overlay por todo o Card (after:inset-0), tornando o bloco inteiro clicável.
 interface Props {
@@ -7,7 +8,7 @@ interface Props {
   hint?: string;
 }
 
-const { href, hint = "abre em nova aba" } = Astro.props;
+const { href, hint = getContent(Astro.currentLocale).ui.newTab } = Astro.props;
 ---
 
 <h3 class="leading-snug font-medium">

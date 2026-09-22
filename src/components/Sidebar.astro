@@ -1,17 +1,21 @@
 ---
 import ArrowUpRight from "./ArrowUpRight.astro";
+import LangToggle from "./LangToggle.astro";
 import MailIcon from "./MailIcon.astro";
 import SectionNav from "./SectionNav.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 import { profile } from "../data/profile";
+import { getContent } from "../i18n";
 
-// O botão de tema é o último item da lista de contatos: assim ele quebra linha junto com os links.
+const c = getContent(Astro.currentLocale);
+
+// Idioma e tema dividem o último item da lista de contatos: quebram linha juntos, nunca sozinhos.
 
 const links = [
   { label: "GitHub", href: profile.links.github, external: true },
   { label: "LinkedIn", href: profile.links.linkedin, external: true },
-  { label: "Currículo", href: profile.links.curriculo, external: true, aviso: "PDF, abre em nova aba" },
-  { label: "E-mail", href: `mailto:${profile.email}`, external: false },
+  { label: c.ui.resume, href: c.resume, external: true, aviso: c.ui.pdfNewTab },
+  { label: c.ui.email, href: `mailto:${profile.email}`, external: false },
 ];
 ---
 
@@ -20,15 +24,15 @@ const links = [
 >
   <div>
     <h1 class="heading text-4xl text-fg sm:text-5xl">{profile.name}</h1>
-    <p class="mt-3 text-lg text-fg">{profile.role}</p>
-    <p class="mt-1 font-mono text-sm text-subtle">{profile.focus.join(" · ")}</p>
-    <p class="mt-6 max-w-sm leading-7 text-muted">{profile.tagline}</p>
+    <p class="mt-3 text-lg text-fg">{c.role}</p>
+    <p class="mt-1 font-mono text-sm text-subtle">{c.focus.join(" · ")}</p>
+    <p class="mt-6 max-w-sm leading-7 text-muted">{c.tagline}</p>
 
     <SectionNav class="mt-16 hidden lg:block" />
   </div>
 
   <div class="mt-10 lg:mt-0">
-    <ul class="flex flex-wrap items-center gap-x-6 gap-y-3" aria-label="Contato e preferências">
+    <ul class="flex flex-wrap items-center gap-x-6 gap-y-3" aria-label={c.ui.contactsLabel}>
       {
         links.map((link) => (
           <li class="flex">
@@ -39,12 +43,13 @@ const links = [
             >
               {link.label}
               {link.external ? <ArrowUpRight /> : <MailIcon />}
-              {link.external && <span class="sr-only">({link.aviso ?? "abre em nova aba"})</span>}
+              {link.external && <span class="sr-only">({link.aviso ?? c.ui.newTab})</span>}
             </a>
           </li>
         ))
       }
-      <li class="flex">
+      <li class="flex items-center gap-5">
+        <LangToggle />
         <ThemeToggle />
       </li>
     </ul>

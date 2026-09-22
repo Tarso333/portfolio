@@ -1,12 +1,15 @@
 ---
+import { getContent } from "../i18n";
+
 interface Props {
   items: string[];
 }
 
 const { items } = Astro.props;
+const { ui } = getContent(Astro.currentLocale);
 ---
 
-<ul class="mt-5 flex flex-wrap gap-1.5" aria-label="Tecnologias">
+<ul class="mt-5 flex flex-wrap gap-1.5" aria-label={ui.techLabel}>
   {
     items.map((item) => (
       <li class="rounded-sm border border-line px-2 py-0.5 font-mono text-xs leading-5 text-muted transition-colors duration-300 group-hover:border-line-strong">

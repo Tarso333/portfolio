@@ -4,7 +4,9 @@ import Metrics from "./Metrics.astro";
 import CardTitle from "./CardTitle.astro";
 import RichText from "./RichText.astro";
 import TagList from "./TagList.astro";
-import { experience } from "../data/profile";
+import { getContent } from "../i18n";
+
+const { experience } = getContent(Astro.currentLocale);
 ---
 
 <ol class="-mt-4 space-y-4">

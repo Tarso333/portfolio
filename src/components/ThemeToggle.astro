@@ -1,11 +1,17 @@
 ---
 // Botão só de ícone, na mesma linha dos contatos: mostra o sol no tema escuro
-// (clique leva ao claro) e a lua no tema claro. O nome acessível fica no sr-only.
+// (clique leva ao claro) e a lua no tema claro. O nome acessível fica no sr-only,
+// com os textos do idioma da página vindos dos atributos data-*.
+import { getContent } from "../i18n";
+
+const { ui } = getContent(Astro.currentLocale);
 ---
 
 <button
   type="button"
   data-theme-toggle
+  data-to-light={ui.themeToLight}
+  data-to-dark={ui.themeToDark}
   class="-mx-1 -my-1 inline-flex items-center px-1 py-1 text-muted transition-colors hover:text-fg"
 >
   <svg
@@ -31,17 +37,18 @@
   >
     <path d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8Z" />
   </svg>
-  <span class="sr-only" data-theme-status>Alternar tema</span>
+  <span class="sr-only" data-theme-status>{ui.themeToggle}</span>
 </button>
 
 <script>
   const root = document.documentElement;
+  const button = document.querySelector<HTMLElement>("[data-theme-toggle]");
   const status = document.querySelector<HTMLElement>("[data-theme-status]");
 
   const render = () => {
     if (!status) return;
     const escuro = root.dataset.theme === "dark";
-    status.textContent = escuro ? "Mudar para o tema claro (atual: escuro)" : "Mudar para o tema escuro (atual: claro)";
+    status.textContent = (escuro ? button?.dataset.toLight : button?.dataset.toDark) ?? "";
   };
 
   const saved = () => {
@@ -52,7 +59,7 @@
     }
   };
 
-  document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
+  button?.addEventListener("click", () => {
     const next = root.dataset.theme === "dark" ? "light" : "dark";
     root.dataset.theme = next;
     render();

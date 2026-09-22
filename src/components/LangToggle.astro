@@ -1,0 +1,55 @@
+---
+import { getContent, homePath, languages, toLang } from "../i18n";
+
+// PT / EN: o idioma atual em destaque, o outro como link real (funciona sem JS e é indexável).
+// Com JS, a troca mantém a seção em que o visitante está: /#projetos vira /en/#projects.
+const lang = toLang(Astro.currentLocale);
+const c = getContent(lang);
+---
+
+<div role="group" aria-label={c.ui.langGroupLabel} class="label inline-flex items-center gap-1.5">
+  {
+    languages.map((code, i) => {
+      const target = getContent(code);
+      return (
+        <>
+          {i > 0 && (
+            <span aria-hidden="true" class="text-line-strong">
+              /
+            </span>
+          )}
+          {code === lang ? (
+            <span aria-current="true" class="text-fg">
+              {target.langShort}
+              <span class="sr-only"> · {target.langName}</span>
+            </span>
+          ) : (
+            <a
+              href={homePath(code)}
+              hreflang={target.htmlLang}
+              lang={target.htmlLang}
+              data-lang-link
+              data-sections={target.sections.map((section) => section.id).join(" ")}
+              class="-my-1 py-1 text-muted transition-colors hover:text-fg"
+            >
+              {target.langShort}
+              <span class="sr-only"> · {target.langName}</span>
+            </a>
+          )}
+        </>
+      );
+    })
+  }
+</div>
+
+<script>
+  // As seções têm a mesma ordem nos dois idiomas, então basta levar o índice da seção ativa.
+  document.querySelectorAll<HTMLAnchorElement>("[data-lang-link]").forEach((link) => {
+    link.addEventListener("click", () => {
+      const navLinks = [...document.querySelectorAll("[data-nav-link]")];
+      const active = navLinks.findIndex((item) => item.getAttribute("aria-current") === "true");
+      const ids = (link.dataset.sections ?? "").split(" ");
+      if (active > 0 && ids[active]) link.hash = ids[active];
+    });
+  });
+</script>

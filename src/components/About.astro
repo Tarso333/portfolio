@@ -2,7 +2,9 @@
 import { Picture } from "astro:assets";
 import photo from "../assets/tarso.jpg";
 import RichText from "./RichText.astro";
-import { about, portrait } from "../data/profile";
+import { getContent } from "../i18n";
+
+const { about, portrait } = getContent(Astro.currentLocale);
 
 // A foto ocupa a mesma coluna de 10rem das datas em Experiência.
 // Entre lg e xl a coluna direita fica estreita demais, então a foto volta para cima do texto.
@@ -23,7 +25,7 @@ import { about, portrait } from "../data/profile";
       priority
       class="h-auto w-full rounded-sm grayscale dark:brightness-[0.88]"
     />
-    <figcaption class="label mt-3 text-subtle">{portrait.caption}</figcaption>
+    <figcaption class="label mt-3 whitespace-nowrap text-subtle">{portrait.caption}</figcaption>
   </figure>
 
   <div class="mt-8 space-y-4 leading-7 text-muted sm:mt-0 lg:mt-8 xl:mt-0">

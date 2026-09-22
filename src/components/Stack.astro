@@ -1,5 +1,7 @@
 ---
-import { stack } from "../data/profile";
+import { getContent } from "../i18n";
+
+const { stack } = getContent(Astro.currentLocale);
 
 // Mesma grade editorial das outras seções: categoria na coluna de 10rem, tecnologias ao lado.
 ---
