@@ -198,9 +198,22 @@ export const en: Content = {
     { label: "Frontend", items: ["React", "Next.js", "TypeScript", "Astro", "Tailwind CSS"] },
     { label: "Data", items: ["PostgreSQL", "SQLite", "Redis", "Drizzle ORM"] },
     { label: "Quality", items: ["pytest", "SonarQube", "code review", "Conventional Commits"] },
-    { label: "DevOps", items: ["Docker", "Docker Compose", "GitLab CI", "Nginx", "Git", "Linux"] },
+    { label: "DevOps", items: ["AWS", "Docker", "Docker Compose", "GitLab CI", "Nginx", "Git", "Linux"] },
     { label: "Applied AI", items: ["Google Gemini", "document classifiers", "Ollama"] },
   ],
+
+  certifications: {
+    label: "Certifications",
+    items: [
+      { name: "Cloud Foundations", issuer: "AWS Academy", date: "Oct 2026", url: "https://www.credly.com/go/MJZVGo2W" },
+      { name: "Cloud Security Foundations", issuer: "AWS Academy", date: "Oct 2026", url: "https://www.credly.com/go/JyCUB5uK" },
+      { name: "Docker: Essential Tool for Developers", issuer: "Udemy", date: "Aug 2026", url: "https://ude.my/UC-33779b30-6934-4620-a21d-33de734d78db" },
+      { name: "Selenium + Python for Web Scraping and Automation", issuer: "Udemy", date: "Jun 2026", url: "https://ude.my/UC-654b973f-6173-4b46-86a4-b0b1c4d5d08d" },
+      { name: "TakeOff Program: AI, Prompt Engineering, DevOps and Docker", issuer: "Rocketseat", date: "Apr 2026" },
+      { name: "Python Programming from Zero to Artificial Intelligence", issuer: "Udemy", date: "Apr 2026", url: "https://ude.my/UC-ebc37e0a-f3be-4df2-b4d5-88a2d85226d1" },
+      { name: "JavaScript from Basic to Advanced with Node.js", issuer: "Udemy", date: "Feb 2026", url: "https://ude.my/UC-d6113768-9dc8-4b1a-8205-3c7afc8c772e" },
+    ],
+  },
 
   contact: {
     intro:
@@ -223,6 +236,7 @@ export const en: Content = {
     demoBadge: "live demo",
     allProjects: "See all projects on GitHub",
     techLabel: "Technologies",
+    verifyHint: "verify certificate, opens in a new tab",
     themeToggle: "Toggle theme",
     themeToLight: "Switch to light theme (current: dark)",
     themeToDark: "Switch to dark theme (current: light)",

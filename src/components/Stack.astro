@@ -1,9 +1,12 @@
 ---
+import ArrowUpRight from "./ArrowUpRight.astro";
 import { getContent } from "../i18n";
 
-const { stack } = getContent(Astro.currentLocale);
+const { stack, certifications, ui } = getContent(Astro.currentLocale);
 
-// Mesma grade editorial das outras seções: categoria na coluna de 10rem, tecnologias ao lado.
+// Mesma grade editorial das outras seções: categoria na coluna de 10rem, conteúdo ao lado.
+// Certificações fecham a lista, cada uma com link de verificação quando existir.
+// O link é inline para a seta acompanhar a última palavra quando o nome quebra de linha.
 ---
 
 <dl class="divide-y divide-line border-y border-line">
@@ -15,4 +18,34 @@ const { stack } = getContent(Astro.currentLocale);
       </div>
     ))
   }
+  <div class="py-4 sm:grid sm:grid-cols-[10rem_1fr] sm:gap-6 lg:block xl:grid">
+    <dt class="label pt-0.5 text-subtle">{certifications.label}</dt>
+    <dd class="mt-2 sm:mt-0 lg:mt-2 xl:mt-0">
+      <ul class="space-y-2">
+        {
+          certifications.items.map((cert) => (
+            <li class="text-sm leading-6">
+              {cert.url ? (
+                <a
+                  href={cert.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group/cert text-fg/85 transition-colors duration-200 hover:text-fg"
+                >
+                  <span class="underline decoration-subtle/50 underline-offset-4 transition-colors duration-200 group-hover/cert:decoration-fg">{cert.name}</span>
+                  <ArrowUpRight class="ml-1.5 inline-block transition-transform duration-300 ease-out group-hover/cert:-translate-y-0.5 group-hover/cert:translate-x-0.5" />
+                  <span class="sr-only">({ui.verifyHint})</span>
+                </a>
+              ) : (
+                <span class="text-fg/85">{cert.name}</span>
+              )}
+              <span class="block font-mono text-xs leading-5 text-subtle">
+                {cert.issuer} · {cert.date}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </dd>
+  </div>
 </dl>

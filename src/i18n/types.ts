@@ -69,6 +69,8 @@ export type Content = {
   projectGroups: { id: ProjectGroupId; label: string; note: string }[];
   projects: Project[];
   stack: { label: string; items: string[] }[];
+  // Com link de verificação pública (Credly, Udemy) quando existir.
+  certifications: { label: string; items: { name: string; issuer: string; date: string; url?: string }[] };
   contact: { intro: string };
 
   ui: {
@@ -87,6 +89,7 @@ export type Content = {
     demoBadge: string;
     allProjects: string;
     techLabel: string;
+    verifyHint: string;
     themeToggle: string;
     themeToLight: string;
     themeToDark: string;

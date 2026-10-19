@@ -199,9 +199,22 @@ export const pt: Content = {
     { label: "Front-end", items: ["React", "Next.js", "TypeScript", "Astro", "Tailwind CSS"] },
     { label: "Dados", items: ["PostgreSQL", "SQLite", "Redis", "Drizzle ORM"] },
     { label: "Qualidade", items: ["pytest", "SonarQube", "code review", "Conventional Commits"] },
-    { label: "DevOps", items: ["Docker", "Docker Compose", "GitLab CI", "Nginx", "Git", "Linux"] },
+    { label: "DevOps", items: ["AWS", "Docker", "Docker Compose", "GitLab CI", "Nginx", "Git", "Linux"] },
     { label: "IA aplicada", items: ["Google Gemini", "classificadores de documentos", "Ollama"] },
   ],
+
+  certifications: {
+    label: "Certificações",
+    items: [
+      { name: "Cloud Foundations", issuer: "AWS Academy", date: "out 2026", url: "https://www.credly.com/go/MJZVGo2W" },
+      { name: "Cloud Security Foundations", issuer: "AWS Academy", date: "out 2026", url: "https://www.credly.com/go/JyCUB5uK" },
+      { name: "Docker: Ferramenta essencial para Desenvolvedores", issuer: "Udemy", date: "ago 2026", url: "https://ude.my/UC-33779b30-6934-4620-a21d-33de734d78db" },
+      { name: "Selenium + Python para Web Scraping e Automação", issuer: "Udemy", date: "jun 2026", url: "https://ude.my/UC-654b973f-6173-4b46-86a4-b0b1c4d5d08d" },
+      { name: "Ciclo TakeOff: IA, Prompt Engineering, DevOps e Docker", issuer: "Rocketseat", date: "abr 2026" },
+      { name: "Programação Python do Zero à Inteligência Artificial", issuer: "Udemy", date: "abr 2026", url: "https://ude.my/UC-ebc37e0a-f3be-4df2-b4d5-88a2d85226d1" },
+      { name: "JavaScript do básico ao avançado com Node.js", issuer: "Udemy", date: "fev 2026", url: "https://ude.my/UC-d6113768-9dc8-4b1a-8205-3c7afc8c772e" },
+    ],
+  },
 
   contact: {
     intro:
@@ -224,6 +237,7 @@ export const pt: Content = {
     demoBadge: "demo no ar",
     allProjects: "Ver todos os projetos no GitHub",
     techLabel: "Tecnologias",
+    verifyHint: "verificar certificado, abre em nova aba",
     themeToggle: "Alternar tema",
     themeToLight: "Mudar para o tema claro (atual: escuro)",
     themeToDark: "Mudar para o tema escuro (atual: claro)",
